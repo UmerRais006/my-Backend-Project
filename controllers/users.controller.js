@@ -70,23 +70,65 @@ async function getUserById(req, res) {
     // console.log(req.params.id);
     // cosnole.log("e1");
     const userFoundById = await User.findById(req.params.id);
-    // console.log(userFoundById);
+    console.log(userFoundById);
     // cosnole.log("e3");
     if (userFoundById) {
       return res
         .status(202)
         .json({ message: "user is founded : ", userFoundById });
     } else {
-        // cosnole.log("e3");
+      // cosnole.log("e3");
       res.status(500).json({ message: "User is not found by this Id" });
     }
   } catch (error) {
-    
-    res.status(500).json({ message: "User is not fetch due to some error !" });
+    res.status(500).json({ message: "User is not found by this id!", error });
   }
 }
 
-module.exports = { createUser, getAllUser, getUserById };
+async function updateUserByID(req, res) {
+  try {
+    const updateData = req.body;
+    const resourceId = req.params.id;
+    const updatedUser = await User.findByIdAndUpdate(resourceId, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (updatedUser) {
+      return res
+        .status(202)
+        .json({ message: "User is Updated : ", updatedUser });
+    } else {
+      res.status(500).json({ message: "User is not Updated" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "User is not found by this id!", error });
+  }
+}
+
+
+
+async function findUserAndDelete(req, res) {
+  try {
+    // console.log(req.params.id);
+    // cosnole.log("e1");
+    const userFoundById = await User.findByIdAndDelete(req.params.id);
+    console.log(userFoundById);
+    // cosnole.log("e3");
+    if (userFoundById) {
+      return res
+        .status(202)
+        .json({ message: "user is deleted : ", userFoundById });
+    } else {
+      // cosnole.log("e3");
+      res.status(500).json({ message: "User is not found by this Id for deletion" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "User is not found by this id for delete!", error });
+  }
+}
+
+module.exports = { createUser, getAllUser, getUserById, updateUserByID,findUserAndDelete };
 // exports.createUser = (res, req) => {
 //   const userData = { ...req.body };
 // };
