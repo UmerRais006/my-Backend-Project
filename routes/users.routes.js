@@ -5,13 +5,20 @@ const {
   getUserById,
   updateUserByID,
   findUserAndDelete,
+  getUserByEmail,
+  getUserByAge,
+  getUserByAgeLesser,
 } = require("../controllers/users.controller");
-const { findByIdAndDelete } = require("../models/user.model");
+// const { findByIdAndDelete } = require("../models/user.model");
 const router = express.Router();
 
 router.post("/api/users", createUser);
+router.get("/api/users/search", getUserByAge);
+router.get("/api/users/details/search", getUserByAgeLesser);
 router.get("/api/users", getAllUser);
 router.get("/api/users/:id", getUserById);
 router.put("/api/users/:id", updateUserByID);
 router.delete("/api/users/:id", findUserAndDelete);
+router.get("/api/users/email/:email", getUserByEmail);
+
 module.exports = router;
