@@ -31,7 +31,7 @@ router.get("/api/users/:id", getUserById);
 router.put("/api/users/:id", userValidationMiddileware, updateUserByID);
 router.delete("/api/users/:id", findUserAndDelete);
 
-router.get("/api/users/email/:email", emailMiddleware, getUserByEmail);
+router.get("/api/users/email/:email", getUserByEmail);
 // router.get(
 //   "/api/users/email/:email",
 //   (req, res, next) => {

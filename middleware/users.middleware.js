@@ -1,8 +1,3 @@
-const emailMiddleware = function (req, res, next) {
-  console.log("heheheheheh");
-  next();
-};
-
 const userValidationMiddileware = function (req, res, next) {
   const { firstName, lastName, email, password, age, phoneNumber } = req.body;
 
