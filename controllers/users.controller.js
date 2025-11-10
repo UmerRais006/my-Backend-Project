@@ -18,7 +18,6 @@ async function createUser(req, res) {
       .status(201)
       .json({ message: "new user has been created", id: newUser._id });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "User is not added", error });
   }
 }
@@ -26,7 +25,6 @@ async function createUser(req, res) {
 async function getAllUser(req, res) {
   try {
     const allUsers = await User.find();
-    console.log(allUsers.length);
     if (allUsers.length > 0) {
       return res
         .status(200)
@@ -35,7 +33,6 @@ async function getAllUser(req, res) {
       res.status(500).json({ message: "Users are not availiable in db" });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Users is not found in database !" });
   }
 }
@@ -43,8 +40,6 @@ async function getAllUser(req, res) {
 async function getUserById(req, res) {
   try {
     const userFoundById = await User.findById(req.params.id);
-    console.log(userFoundById);
-
     if (userFoundById) {
       return res
         .status(200)
@@ -81,7 +76,6 @@ async function updateUserByID(req, res) {
 async function findUserAndDelete(req, res) {
   try {
     const userFoundById = await User.findByIdAndDelete(req.params.id);
-    console.log(userFoundById);
 
     if (userFoundById) {
       return res
@@ -137,8 +131,6 @@ async function getUserByAge(req, res) {
 
 async function getUserByAgeLesser(req, res) {
   try {
-    // console.log(req.params.id);
-    // cosnole.log("e1");
     if (req.query.age <= 0)
       return res.status(404).json({ message: "Age must be more than 0" });
     const userFoundByAge = await User.find({ age: { $lte: req.query.age } });
