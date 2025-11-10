@@ -31,8 +31,8 @@ const UserSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: Number,
-    minlength: 10,
-    maxlength: 15,
+    min: 1000000000,  // 10 digits
+  max: 999999999999999, // 15 digits
     match: /^\d+$/, // for validate it is a number
   },
 });
