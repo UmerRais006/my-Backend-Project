@@ -6,9 +6,6 @@ const PORT = process.env.PORT;
 const connectionDB = require("./config/connection");
 app.use(express.json());
 app.use("/",userRoutes );
-
-``
-
 connectionDB()
   .then(() => {
     console.log("DATABASE CONNECTED SUCCESFULLY !");

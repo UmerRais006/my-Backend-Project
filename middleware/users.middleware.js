@@ -29,4 +29,4 @@ const userValidationMiddileware = function (req, res, next) {
   next();
 };
 
-module.exports = { emailMiddleware, userValidationMiddileware };
+module.exports = { userValidationMiddileware };

@@ -10,10 +10,7 @@ const {
   getUserByAgeLesser,
 } = require("../controllers/users.controller");
 
-const {
-  emailMiddleware,
-  userValidationMiddileware,
-} = require("../middleware/users.middleware");
+const { userValidationMiddileware } = require("../middleware/users.middleware");
 // const { findByIdAndDelete } = require("../models/user.model");
 const router = express.Router();
 
