@@ -19,7 +19,7 @@ const userValidationMiddileware = function (req, res, next) {
   if (age < 1) {
     return res.status(400).json({ error: "Age must be more than 1" });
   }
-  if (phoneNumber < 10 && phoneNumber > 15) {
+  if (phoneNumber < 10 || phoneNumber > 15) {
     return res
       .status(400)
       .json({ error: "Phone number must be between 10-15 digits " });
