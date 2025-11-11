@@ -52,7 +52,6 @@ UserSchema.methods.toJSON = function () {
 
   delete userObject.firstName;
   delete userObject.lastName;
-
   return userObject;
 };
 const User = mongoose.model("Users", UserSchema);
