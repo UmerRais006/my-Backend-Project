@@ -36,18 +36,24 @@ const UserSchema = new mongoose.Schema(
       max: 999999999999999,
       match: /^\d+$/,
     },
-    
   },
-  {
-    toObject: { virtuals: true },
-    toJSON: { virtuals: true },
-  }
- 
+
+  { id: false, toObject: { virtuals: true }, toJSON: { virtuals: true } }
+  // { id: false }
 );
 
 UserSchema.virtual("fullName").get(function () {
   return this.firstName + " " + this.lastName;
 });
 
+UserSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.firstName;
+  delete userObject.lastName;
+
+  return userObject;
+};
 const User = mongoose.model("Users", UserSchema);
 module.exports = User;

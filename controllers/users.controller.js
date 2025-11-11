@@ -24,6 +24,7 @@ async function createUser(req, res) {
 
 async function getAllUser(req, res) {
   try {
+    // const allUsers = await User.find().select(["-firstName","-lastName"]);
     const allUsers = await User.find();
     if (allUsers.length > 0) {
       return res
