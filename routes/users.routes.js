@@ -1,4 +1,5 @@
 const express = require("express");
+
 const {
   createUser,
   getAllUser,
@@ -8,12 +9,15 @@ const {
   getUserByEmail,
   getUserByAge,
   getUserByAgeLesser,
+  verifyUser,
 } = require("../controllers/users.controller");
+// const app = express();
 
-const { userValidationMiddileware } = require("../middleware/users.middleware");
+const { userValidationMiddileware,userVerification } = require("../middleware/users.middleware");
 const router = express.Router();
 
 router.post("/api/users", userValidationMiddileware, createUser);
+router.post("/api/users/login",userVerification, verifyUser);
 router.get("/api/users/search", getUserByAge);
 router.get("/api/users/details/search", getUserByAgeLesser);
 router.get("/api/users", getAllUser);

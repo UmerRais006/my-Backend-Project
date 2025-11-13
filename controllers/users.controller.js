@@ -13,7 +13,7 @@ async function createUser(req, res) {
     });
 
     await newUser.save();
-
+    console.log("why error");
     return res
       .status(201)
       .json({ message: "new user has been created", id: newUser._id });
@@ -112,6 +112,21 @@ async function getUserByEmail(req, res) {
   }
 }
 
+async function verifyUser(req, res) {
+  try {
+    const verifiedUser = await User.findOne({ email: req.data.email });
+    // console.log(verifyEmail);
+    // const verifyPassword = await User.findOne({ password: req.data.password });
+    if (verifiedUser.password==req.data.password) {
+      return res.status(200).json({ message: "User is verified" });
+    } else {
+      res.status(404).json({ message: "Email or Password is incorrect!" });
+    }
+  } catch {
+    res.status(404).json({ message: "server error" });
+  }
+}
+
 async function getUserByAge(req, res) {
   try {
     if (req.query.age <= 0)
@@ -147,6 +162,7 @@ async function getUserByAgeLesser(req, res) {
     res.status(400).json({ message: "Please Enter Valid Age  !", error });
   }
 }
+
 module.exports = {
   createUser,
   getAllUser,
@@ -156,4 +172,5 @@ module.exports = {
   getUserByEmail,
   getUserByAge,
   getUserByAgeLesser,
+  verifyUser,
 };

@@ -32,8 +32,6 @@ const UserSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: Number,
-      min: 1000000000,
-      max: 999999999999999,
       match: /^\d+$/,
     },
   },
