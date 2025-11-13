@@ -13,43 +13,43 @@ async function createUser(req, res) {
     });
 
     await newUser.save();
-    console.log("why error");
     return res
       .status(201)
       .json({ message: "new user has been created", id: newUser._id });
   } catch (error) {
-    res.status(500).json({ message: "User is not added", error });
+    console.log(error, "db:");
+    return res
+      .status(500)
+      .json({ message: "User is not added", error: error?.message });
   }
 }
 
 async function getAllUser(req, res) {
   try {
-    // const allUsers = await User.find().select(["-firstName","-lastName"]);
     const allUsers = await User.find();
-    if (allUsers.length > 0) {
+    if ((allUsers.length = 0)) {
       return res
-        .status(200)
-        .json({ message: "All users retrieved successfully: ", allUsers });
-    } else {
-      res.status(500).json({ message: "Users are not availiable in db" });
+        .status(500)
+        .json({ message: "Users are not availiable in db" });
     }
+    return res
+      .status(200)
+      .json({ message: "All users retrieved successfully: ", allUsers });
   } catch (error) {
-    res.status(500).json({ message: "Users is not found in database !" });
+    return res.status(500).json({ message: "Internal server error !" });
   }
 }
 
 async function getUserById(req, res) {
   try {
     const userFoundById = await User.findById(req.params.id);
-    if (userFoundById) {
-      return res
-        .status(200)
-        .json({ message: "user is founded : ", userFoundById });
-    } else {
-      res.status(404).json({ message: "User is not found by this Id" });
-    }
+    if (!userFoundById)
+      return res.status(404).json({ message: "User is not found by this Id" });
+    return res
+      .status(200)
+      .json({ message: "user is founded : ", userFoundById });
   } catch (error) {
-    res.status(500).json({ message: "User is not found by this id!", error });
+    return res.status(500).json({ message: "Internal server error", error });
   }
 }
 
@@ -62,15 +62,12 @@ async function updateUserByID(req, res) {
       runValidators: true,
     });
 
-    if (updatedUser) {
-      return res
-        .status(200)
-        .json({ message: "User is Updated : ", updatedUser });
-    } else {
-      res.status(404).json({ message: "User is not Updated" });
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
     }
+    return res.status(200).json({ message: "User is Updated : ", updatedUser });
   } catch (error) {
-    res.status(500).json({ message: "Server Error!", error });
+    return res.status(500).json({ message: " Internal Server Error!", error });
   }
 }
 
@@ -78,17 +75,16 @@ async function findUserAndDelete(req, res) {
   try {
     const userFoundById = await User.findByIdAndDelete(req.params.id);
 
-    if (userFoundById) {
+    if (!userFoundById) {
       return res
-        .status(200)
-        .json({ message: "user is deleted : ", userFoundById });
-    } else {
-      res
         .status(404)
         .json({ message: "User is not found by this Id for deletion" });
     }
+    return res
+      .status(200)
+      .json({ message: "user is deleted : ", userFoundById });
   } catch (error) {
-    res
+    return res
       .status(404)
       .json({ message: "User is not found by this id for delete!", error });
   }
@@ -98,32 +94,34 @@ async function getUserByEmail(req, res) {
   try {
     const userFoundByEmail = await User.findOne({ email: req.params.email });
 
-    if (userFoundByEmail) {
+    if (!userFoundByEmail) {
       return res
-        .status(200)
-        .json({ message: "user is founded with email : ", userFoundByEmail });
-    } else {
-      res.status(404).json({ message: "User not found by this email !!!!!!" });
+        .status(404)
+        .json({ message: "User is not found by this email !", error });
     }
+    return res
+      .status(200)
+      .json({ message: "user is founded with email : ", userFoundByEmail });
   } catch (error) {
-    res
-      .status(404)
-      .json({ message: "User is not found by this email !", error });
+    return res.status(200).json({ message: "Internal server error" });
   }
 }
 
 async function verifyUser(req, res) {
   try {
     const verifiedUser = await User.findOne({ email: req.data.email });
-    // console.log(verifyEmail);
-    // const verifyPassword = await User.findOne({ password: req.data.password });
-    if (verifiedUser.password==req.data.password) {
-      return res.status(200).json({ message: "User is verified" });
-    } else {
-      res.status(404).json({ message: "Email or Password is incorrect!" });
+    if (!verifiedUser) {
+      return res.status(404).json({ message: "User not found" });
     }
-  } catch {
-    res.status(404).json({ message: "server error" });
+
+    if (verifiedUser.password !== req.data.password) {
+      return res
+        .status(404)
+        .json({ message: " Email or Password is not valid" });
+    }
+    return res.status(200).json({ message: "User is verified" });
+  } catch (error) {
+    return res.status(404).json({ message: "Internal server error", error });
   }
 }
 
@@ -141,7 +139,9 @@ async function getUserByAge(req, res) {
       .status(200)
       .json({ message: "user is founded with age : ", user: userFoundByAge });
   } catch (error) {
-    res.status(400).json({ message: "Please Enter Valid Age  !", error });
+    return res
+      .status(400)
+      .json({ message: "Please Enter Valid Age  !", error });
   }
 }
 
