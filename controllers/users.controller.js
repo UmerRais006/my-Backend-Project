@@ -126,6 +126,7 @@ async function verifyUser(req, res) {
 }
 
 async function getUserByAge(req, res) {
+  //ehehe
   try {
     if (req.query.age <= 0)
       return res.status(500).json({ message: "Age must be more than 0" });
