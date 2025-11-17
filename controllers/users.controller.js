@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const { generateToken } = require("../utils/jwt.utils");
 
 async function createUser(req, res) {
   try {
@@ -113,12 +114,15 @@ async function verifyUser(req, res) {
     if (!verifiedUser) {
       return res.status(404).json({ message: "User not found" });
     }
+    // console.log(verifiedUser);
+    // console.log(verifiedUser._id.toString());
 
     if (verifiedUser.password !== req.data.password) {
       return res
         .status(404)
         .json({ message: " Email or Password is not valid" });
     }
+    generateToken(verifiedUser._id.toString());
     return res.status(200).json({ message: "User is verified" });
   } catch (error) {
     return res.status(404).json({ message: "Internal server error", error });
