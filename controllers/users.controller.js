@@ -1,3 +1,4 @@
+const { decode } = require("jsonwebtoken");
 const User = require("../models/user.model");
 const { generateToken } = require("../utils/jwt.utils");
 
@@ -56,8 +57,10 @@ async function getUserById(req, res) {
 
 async function updateUserByID(req, res) {
   try {
+  // console.log(req.decode,"last")
     const updateData = req.body;
-    const resourceId = req.params.id;
+    
+    const resourceId = req.decode.id;
     const updatedUser = await User.findByIdAndUpdate(resourceId, updateData, {
       new: true,
       runValidators: true,

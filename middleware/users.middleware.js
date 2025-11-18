@@ -1,9 +1,17 @@
 const userValidationMiddileware = function (req, res, next) {
   // console.log("hehehehe");
-
+  // console.log(req.decode,"hehehh");
   const { firstName, lastName, email, password, age, phoneNumber } = req.body;
   // console.log(age.length);
-  if (!firstName || !lastName || !email || !password || age==null || !phoneNumber) {
+
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !password ||
+    age == null ||
+    !phoneNumber
+  ) {
     // console.log();
     return res.status(400).json({ error: " Missing required fields!" });
   }

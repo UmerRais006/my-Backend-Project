@@ -27,7 +27,7 @@ router.get("/api/users/search", getUserByAge);
 router.get("/api/users/details/search", getUserByAgeLesser);
 router.get("/api/users", getAllUser);
 router.get("/api/users/:id", getUserById);
-router.put("/api/users/:id",authorization, userValidationMiddileware, updateUserByID);
+router.put("/api/users",authorization, userValidationMiddileware, updateUserByID);
 router.delete("/api/users/:id", findUserAndDelete);
 router.get("/api/users/email/:email", getUserByEmail);
 
