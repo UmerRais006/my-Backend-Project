@@ -1,10 +1,11 @@
 const userValidationMiddileware = function (req, res, next) {
   // console.log("hehehehe");
   // console.log(req.decode,"hehehh");
-  const { firstName, lastName, email, password, age, phoneNumber } = req.body;
+  const { role,firstName, lastName, email, password, age, phoneNumber } = req.body;
   // console.log(age.length);
 
   if (
+    !role ||
     !firstName ||
     !lastName ||
     !email ||
