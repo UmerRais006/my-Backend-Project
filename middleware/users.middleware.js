@@ -2,8 +2,9 @@ const userValidationMiddileware = function (req, res, next) {
   // console.log("hehehehe");
 
   const { firstName, lastName, email, password, age, phoneNumber } = req.body;
-  console.log(req.body);
-  if (!firstName || !lastName || !email || !password || !age || !phoneNumber) {
+  // console.log(age.length);
+  if (!firstName || !lastName || !email || !password || age==null || !phoneNumber) {
+    // console.log();
     return res.status(400).json({ error: " Missing required fields!" });
   }
 
@@ -49,4 +50,4 @@ const userVerification = function (req, res, next) {
   req.data = req.body;
   next();
 };
-module.exports = { userValidationMiddileware,userVerification };
+module.exports = { userValidationMiddileware, userVerification };

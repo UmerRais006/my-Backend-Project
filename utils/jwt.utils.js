@@ -11,6 +11,7 @@ const jwtVerification = (token) => {
       return decode;
     }
   });
+//   next();
 };
 
 const generateToken = (payload) => {

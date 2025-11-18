@@ -122,8 +122,12 @@ async function verifyUser(req, res) {
         .status(404)
         .json({ message: " Email or Password is not valid" });
     }
-    generateToken(verifiedUser._id.toString());
-    return res.status(200).json({ message: "User is verified" });
+    const token = generateToken({
+      id: verifiedUser._id.toString(),
+      fullName: verifiedUser.fullName,
+    });
+    // console.log(token);
+    return res.status(200).json({ message: "User is verified", token: token });
   } catch (error) {
     return res.status(404).json({ message: "Internal server error", error });
   }
