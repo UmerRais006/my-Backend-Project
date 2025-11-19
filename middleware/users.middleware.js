@@ -1,8 +1,6 @@
 const userValidationMiddileware = function (req, res, next) {
-  // console.log("hehehehe");
-  // console.log(req.decode,"hehehh");
-  const { role,firstName, lastName, email, password, age, phoneNumber } = req.body;
-  // console.log(age.length);
+  const { role, firstName, lastName, email, password, age, phoneNumber } =
+    req.body;
 
   if (
     !role ||
@@ -41,6 +39,29 @@ const userValidationMiddileware = function (req, res, next) {
   next();
 };
 
+const adminValidationMiddileware = function (req, res, next) {
+
+  // console.log(age.length);
+  if (req.body.role == "superadmin") {
+    return res.status(400).json({ error: "Admin cannot creat super admin!" });
+  }
+
+  req.data = req.body;
+  next();
+};
+
+const userMiddileware = function (req, res, next) {
+
+  if (req.body.role == "admin" || req.body.role == "superadmin") {
+    return res
+      .status(400)
+      .json({ error: "cannot create admin or superadmin!" });
+  }
+
+  // req.data = req.body;
+  next();
+};
+
 const userVerification = function (req, res, next) {
   const { email, password } = req.body;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,4 +80,9 @@ const userVerification = function (req, res, next) {
   req.data = req.body;
   next();
 };
-module.exports = { userValidationMiddileware, userVerification };
+module.exports = {
+  userValidationMiddileware,
+  userVerification,
+  adminValidationMiddileware,
+  userMiddileware,
+};

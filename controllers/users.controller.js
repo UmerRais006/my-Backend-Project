@@ -16,12 +16,22 @@ async function createUser(req, res) {
       phoneNumber,
     });
 
+    const countOfSuperAdmin = await User.countDocuments({ role: "superadmin" });
+    console.log(countOfSuperAdmin);
+    if (countOfSuperAdmin == 1 && role === "superadmin") {
+      return res
+        .status(500)
+        .json({ message: "Super admin cannot be more than 1 !" });
+    }
+    
+
     await newUser.save();
+    // if(countOfSuperAdmin==0 && role=="superAdmin")
     return res
       .status(201)
       .json({ message: "new user has been created", id: newUser._id });
   } catch (error) {
-    console.log(error, "db:");
+    // console.log(error, "db:");
     return res
       .status(500)
       .json({ message: "User is not added", error: error?.message });
@@ -103,8 +113,8 @@ async function updateUserByID(req, res) {
 async function findUserAndDelete(req, res) {
   try {
     const userCheck = await User.findById(req.params.id);
-    if (userCheck.role === "admin") {
-      return res.status(404).json({ message: "Admin cannot be removed " });
+    if (userCheck.role === "superadmin") {
+      return res.status(404).json({ message: "superAdmin cannot be removed " });
     }
     const userFoundById = await User.findByIdAndDelete(req.params.id);
 
@@ -124,7 +134,6 @@ async function findUserAndDelete(req, res) {
 async function deleteUser(req, res) {
   try {
     const userFoundById = await User.findByIdAndDelete(req.decode.id);
-    // console.log(userFoundById,"hehehe");
     if (!userFoundById) {
       return res
         .status(404)

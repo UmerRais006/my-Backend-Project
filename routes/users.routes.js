@@ -18,16 +18,33 @@ const {
 const {
   userValidationMiddileware,
   userVerification,
+  adminValidationMiddileware,
+  superValidationMiddileware,
+  userMiddileware,
 } = require("../middleware/users.middleware");
 const authorization = require("../middleware/authmiddleware");
 const roleAuth = require("../middleware/rolemiddleware");
+const roleSuper = require("../middleware/rolesuperadmin");
 // const { Authorization } = require("../middleware/authmiddlware.js");
 const router = express.Router();
+
+//Super Admin Routes
+
+router.delete("/api/user/superAdmin/:id", findUserAndDelete);
+router.post(
+  "/api/users/superAdmin",
+  authorization,
+  roleSuper,
+  userValidationMiddileware,
+  createUser
+);
+
 // admin routes
 router.post(
   "/api/users/admin",
   authorization,
   roleAuth,
+  adminValidationMiddileware,
   userValidationMiddileware,
   createUser
 );
@@ -49,10 +66,15 @@ router.put(
   userValidationMiddileware,
   adminUpdateAnyUser
 );
-router.delete("/api/user/admin/:id",findUserAndDelete);
+router.delete("/api/user/admin/:id", findUserAndDelete);
 
 // user routes
-router.post("/api/users", userValidationMiddileware, createUser);
+router.post(
+  "/api/users",
+  userMiddileware,
+  userValidationMiddileware,
+  createUser
+);
 router.post("/api/users/login", userVerification, verifyUser);
 
 router.put(
@@ -62,5 +84,5 @@ router.put(
   updateUserByID
 );
 
-router.delete("/api/users",authorization, deleteUser);
+router.delete("/api/users", authorization, deleteUser);
 module.exports = router;

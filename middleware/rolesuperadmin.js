@@ -1,9 +1,9 @@
-const roleAuth = (req, res, next) => {
+const roleSuper = (req, res, next) => {
 
-  if (req.decode.role !== "admin" ) {
+  if (req.decode.role !== "superadmin" ) {
     return res.status(400).json( { "success": false,
   "message": "Access denied: Your role does not allow this operation."});
   }
   next();
 };
-module.exports = roleAuth;
+module.exports = roleSuper;
