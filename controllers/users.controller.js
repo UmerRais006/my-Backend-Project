@@ -23,7 +23,6 @@ async function createUser(req, res) {
         .status(500)
         .json({ message: "Super admin cannot be more than 1 !" });
     }
-    
 
     await newUser.save();
     // if(countOfSuperAdmin==0 && role=="superAdmin")
@@ -73,6 +72,11 @@ async function adminUpdateAnyUser(req, res) {
   try {
     const updateData = req.body;
     const resourceId = req.params.id;
+    if (updateData.role == "superadmin") {
+      return res
+        .status(404)
+        .json({ message: "Cannot update anyone to super admin" });
+    }
     const updatedUser = await User.findByIdAndUpdate(resourceId, updateData, {
       new: true,
       runValidators: true,
@@ -92,7 +96,7 @@ async function adminUpdateAnyUser(req, res) {
 async function updateUserByID(req, res) {
   try {
     const updateData = req.body;
-
+    console.log(updateData);
     const resourceId = req.decode.id;
     const updatedUser = await User.findByIdAndUpdate(resourceId, updateData, {
       new: true,
